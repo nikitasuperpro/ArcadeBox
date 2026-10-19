@@ -1,0 +1,13 @@
+{
+  "name": "ArcadeBox — коллекция мини-игр",
+  "short_name": "ArcadeBox",
+  "description": "Небольшой сборник классических мини-игр для мобильного браузера.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f0f1a",
+  "theme_color": "#0f0f1a",
+  "lang": "ru",
+  "categories": ["games", "entertainment"]
+}

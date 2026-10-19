@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f0f1a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>ArcadeBox</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <noscript>
+    <div style="padding: 2rem; text-align: center; color: #e2e8f0; font-family: sans-serif;">
+      <h1>ArcadeBox</h1>
+      <p>Для работы приложения необходимо включить JavaScript в настройках браузера.</p>
+    </div>
+  </noscript>
+
+  <div id="app">
+
+    <!-- ===== Главный экран ===== -->
+    <section id="screen-home" class="screen active">
+      <div class="screen-content home-center">
+        <div class="hero">
+          <div class="hero-glow"></div>
+          <h1 class="logo">ArcadeBox</h1>
+          <p class="subtitle">Твоя коллекция мини-игр<br>прямо в телефоне</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-large" data-action="show-games">Играть</button>
+          <button class="btn btn-ghost" data-action="show-menu">Меню</button>
+        </div>
+        <p class="hint">Версия 0.3 · Змейка</p>
+      </div>
+    </section>
+
+    <!-- ===== Экран выбора игр ===== -->
+    <section id="screen-games" class="screen">
+      <header class="screen-header">
+        <button class="btn-icon" data-action="go-back" aria-label="Назад">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
+        <h2 class="screen-title">Игры</h2>
+      </header>
+      <div class="screen-content">
+        <div class="games-grid" id="games-grid"></div>
+      </div>
+    </section>
+
+    <!-- ===== ИГРА: Змейка ===== -->
+    <section id="screen-snake" class="screen">
+      <header class="screen-header">
+        <button class="btn-icon" data-action="go-back" aria-label="Назад">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
+        <h2 class="screen-title">Змейка</h2>
+        <button class="btn-icon" id="snake-pause-btn" data-action="snake-pause" aria-label="Пауза" disabled>
+          <svg class="icon-pause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l11.14-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z"/></svg>
+        </button>
+      </header>
+
+      <div class="screen-content snake-content">
+        <!-- HUD: счёт и рекорд -->
+        <div class="snake-hud">
+          <div class="snake-hud-item">
+            <span class="snake-hud-label">Счёт</span>
+            <span class="snake-hud-value" id="snake-score">0</span>
+          </div>
+          <div class="snake-hud-item">
+            <span class="snake-hud-label">Рекорд</span>
+            <span class="snake-hud-value" id="snake-best">0</span>
+          </div>
+        </div>
+
+        <!-- Игровое поле: размер вычисляется в app.js -->
+        <div class="snake-arena-wrap" id="snake-arena-wrap">
+          <div class="snake-arena" id="snake-arena">
+            <canvas id="snake-canvas" width="400" height="400"></canvas>
+            <div class="snake-overlay" id="snake-overlay"></div>
+          </div>
+        </div>
+
+        <p class="snake-hint">Свайп по полю — поворот · тап — пауза<br>На компьютере: стрелки или WASD, пробел — пауза</p>
+      </div>
+    </section>
+
+    <!-- ===== Меню ===== -->
+    <section id="screen-menu" class="screen">
+      <header class="screen-header">
+        <button class="btn-icon" data-action="go-back" aria-label="Назад">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
+        <h2 class="screen-title">Меню</h2>
+      </header>
+      <div class="screen-content">
+        <nav class="menu-list">
+          <button class="menu-item" data-action="go-home">
+            <span class="menu-icon" aria-hidden="true">🏠</span>
+            <span class="menu-text">
+              <span class="menu-title">Главная</span>
+              <span class="menu-desc">Вернуться на главный экран</span>
+            </span>
+            <span class="menu-arrow" aria-hidden="true">›</span>
+          </button>
+          <button class="menu-item" data-action="show-games">
+            <span class="menu-icon" aria-hidden="true">🎮</span>
+            <span class="menu-text">
+              <span class="menu-title">Игры</span>
+              <span class="menu-desc">Список всех доступных игр</span>
+            </span>
+            <span class="menu-arrow" aria-hidden="true">›</span>
+          </button>
+          <button class="menu-item" data-action="show-records">
+            <span class="menu-icon" aria-hidden="true">🏆</span>
+            <span class="menu-text">
+              <span class="menu-title">Рекорды</span>
+              <span class="menu-desc">Твои лучшие результаты</span>
+            </span>
+            <span class="menu-arrow" aria-hidden="true">›</span>
+          </button>
+          <button class="menu-item" data-action="show-settings">
+            <span class="menu-icon" aria-hidden="true">⚙️</span>
+            <span class="menu-text">
+              <span class="menu-title">Настройки</span>
+              <span class="menu-desc">Звук, тема и другие параметры</span>
+            </span>
+            <span class="menu-arrow" aria-hidden="true">›</span>
+          </button>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ===== Заглушка: Рекорды ===== -->
+    <section id="screen-records" class="screen">
+      <header class="screen-header">
+        <button class="btn-icon" data-action="go-back" aria-label="Назад">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
+        <h2 class="screen-title">Рекорды</h2>
+      </header>
+      <div class="screen-content">
+        <div class="placeholder">
+          <div class="placeholder-icon" aria-hidden="true">🏆</div>
+          <h3>Пока здесь пусто</h3>
+          <p>Учёт рекордов появится вместе с играми. Сыграй первую партию — и здесь отобразятся твои достижения.</p>
+          <button class="btn btn-secondary" data-action="go-back">Назад</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Заглушка: Настройки ===== -->
+    <section id="screen-settings" class="screen">
+      <header class="screen-header">
+        <button class="btn-icon" data-action="go-back" aria-label="Назад">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
+        <h2 class="screen-title">Настройки</h2>
+      </header>
+      <div class="screen-content">
+        <div class="placeholder">
+          <div class="placeholder-icon" aria-hidden="true">⚙️</div>
+          <h3>Настройки пока пусты</h3>
+          <p>Параметры звука, визуальных эффектов и управления появятся по мере развития приложения.</p>
+          <button class="btn btn-secondary" data-action="go-back">Назад</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
