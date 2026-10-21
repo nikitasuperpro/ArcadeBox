@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#050816">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>ArcadeBox</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+  <noscript>
+    <div style="padding: 2rem; text-align: center; color: #e8ecff; font-family: sans-serif;">
+      <h1>ArcadeBox</h1>
+      <p>Для работы приложения необходимо включить JavaScript в настройках браузера.</p>
+    </div>
+  </noscript>
+
+  <div id="app">
+
+    <!-- ===== ГЛАВНЫЙ ЭКРАН ===== -->
+    <section id="screen-home" class="screen active">
+      <div class="screen-content home-content">
+
+        <div class="home-top">
+          <div class="brand">
+            <span class="brand-mark" aria-hidden="true">▶</span>
+            <span class="brand-name">ArcadeBox</span>
+          </div>
+          <nav class="home-nav" aria-label="Быстрая навигация">
+            <button class="nav-link" data-action="show-games">Игры</button>
+            <button class="nav-link" data-action="show-records">Рекорды</button>
+            <button class="nav-link" data-action="show-menu">Меню</button>
+          </nav>
+          <button class="btn btn-ghost btn-top" data-action="show-games">К играм</button>
+        </div>
+
+        <div class="home-hero">
+          <div class="hero-text">
+            <p class="hero-tag">Retro-Future Arcade</p>
+            <h1 class="hero-title">Твоя карманная аркада</h1>
+            <p class="hero-slogan">Ретро-душа и неоновый стиль.</p>
+            <div class="hero-actions">
+              <button class="btn btn-primary btn-large" data-action="show-games">▶ Играть</button>
+              <button class="btn btn-ghost" data-action="show-menu">Меню</button>
+            </div>
+          </div>
+
+          <div class="hero-art" aria-hidden="true">
+            <div class="pixel-invader"><i></i></div>
+            <p class="hero-art-caption">Insert coin <span class="blink">▮</span></p>
+            <div class="pixel-heart"><i></i></div>
+          </div>
+        </div>
+
+        <div class="home-section">
+          <div class="section-head">
+            <h2 class="section-title">Популярные игры</h2>
+            <button class="link-btn" data-action="show-games">Все игры ›</button>
+          </div>
+          <div class="games-grid" id="games-grid-home"></div>
+          <p class="collection-info" id="collection-info"></p>
+        </div>
+
+        <p class="hint">Версия 0.8</p>
+      </div>
+    </section>
+
+    <!-- ===== КАТАЛОГ ИГР ===== -->
+    <section id="screen-games" class="screen">
+      <header class="screen-header">
+        <button class="btn-icon" data-action="go-back" aria-label="Назад">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
+        <h2 class="screen-title">Каталог игр</h2>
+      </header>
+      <div class="screen-content">
+        <div class="games-grid" id="games-grid"></div>
+      </div>
+    </section>
+
+    <!-- ===== ИГРА: ЗМЕЙКА ===== -->
+    <section id="screen-snake" class="screen">
+      <header class="screen-header">
+        <button class="btn-icon" data-action="go-back" aria-label="Назад">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
+        <h2 class="screen-title">Змейка</h2>
+        <button class="btn-icon" id="snake-pause-btn" data-action="snake-pause" aria-label="Пауза" disabled>
+          <svg class="icon-pause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l11.14-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z"/></svg>
+        </button>
+      </header>
+
+      <div class="screen-content snake-content">
+        <div class="snake-hud">
+          <div class="snake-hud-item">
+            <span class="snake-hud-label">Счёт</span>
+            <span class="snake-hud-value" id="snake-score">0</span>
+          </div>
+          <div class="snake-hud-item">
+            <span class="snake-hud-label">Рекорд</span>
+            <span class="snake-hud-value" id="snake-best">0</span>
+          </div>
+        </div>
+
+        <div class="snake-arena-wrap" id="snake-arena-wrap">
+          <div class="snake-arena" id="snake-arena">
+            <canvas id="snake-canvas" width="400" height="400"></canvas>
+            <div class="snake-overlay" id="snake-overlay"></div>
+          </div>
+        </div>
+
+        <p class="snake-hint">Свайп по полю — поворот · тап — пауза. На компьютере: стрелки или WASD, пробел — пауза</p>
+      </div>
+    </section>
+
+    <!-- ===== ИГРА: 2048 ===== -->
+    <section id="screen-2048" class="screen">
+      <header class="screen-header">
+        <button class="btn-icon" data-action="go-back" aria-label="Назад">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
+        <h2 class="screen-title">2048</h2>
+      </header>
+
+      <div class="screen-content game-2048-content">
+        <div class="game-2048-hud">
+          <div class="hud-box">
+            <span class="hud-label">Счёт</span>
+            <span class="hud-value" id="score-2048">0</span>
+          </div>
+          <div class="hud-box">
+            <span class="hud-label">Рекорд</span>
+            <span class="hud-value" id="best-2048">0</span>
+          </div>
+        </div>
+
+        <div class="game-2048-grid-wrap">
+          <div class="game-2048-grid" id="grid-2048">
+            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+          </div>
+          <div class="game-2048-overlay hidden" id="overlay-2048"></div>
+        </div>
+
+        <div class="game-2048-controls">
+          <button class="btn btn-secondary" data-action="2048-new">Новая игра</button>
+          <button class="btn btn-ghost" id="btn-2048-undo" data-action="2048-undo" disabled>Отменить</button>
+        </div>
+
+        <p class="game-2048-hint">Свайп или стрелки — двигать плитки. Соединяй одинаковые!</p>
+      </div>
+    </section>
+
+    <!-- ===== МЕНЮ ===== -->
+    <section id="screen-menu" class="screen">
+      <header class="screen-header">
+        <button class="btn-icon" data-action="go-back" aria-label="Назад">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
+        <h2 class="screen-title">Меню</h2>
+      </header>
+      <div class="screen-content">
+        <nav class="menu-list">
+          <button class="menu-item" data-action="go-home">
+            <span class="menu-icon" aria-hidden="true">🏠</span>
+            <span class="menu-text"><span class="menu-title">Главная</span><span class="menu-desc">Вернуться на главный экран</span></span>
+            <span class="menu-arrow" aria-hidden="true">›</span>
+          </button>
+          <button class="menu-item" data-action="show-games">
+            <span class="menu-icon" aria-hidden="true">🎮</span>
+            <span class="menu-text"><span class="menu-title">Игры</span><span class="menu-desc">Каталог всех игр</span></span>
+            <span class="menu-arrow" aria-hidden="true">›</span>
+          </button>
+          <button class="menu-item" data-action="show-records">
+            <span class="menu-icon" aria-hidden="true">🏆</span>
+            <span class="menu-text"><span class="menu-title">Рекорды</span><span class="menu-desc">Твои лучшие результаты</span></span>
+            <span class="menu-arrow" aria-hidden="true">›</span>
+          </button>
+          <button class="menu-item" data-action="show-settings">
+            <span class="menu-icon" aria-hidden="true">⚙️</span>
+            <span class="menu-text"><span class="menu-title">Настройки</span><span class="menu-desc">Звук, тема и другие параметры</span></span>
+            <span class="menu-arrow" aria-hidden="true">›</span>
+          </button>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ===== РЕКОРДЫ ===== -->
+    <section id="screen-records" class="screen">
+      <header class="screen-header">
+        <button class="btn-icon" data-action="go-back" aria-label="Назад">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
+        <h2 class="screen-title">Рекорды</h2>
+      </header>
+      <div class="screen-content">
+        <div class="records-list" id="records-list"></div>
+      </div>
+    </section>
+
+    <!-- ===== НАСТРОЙКИ ===== -->
+    <section id="screen-settings" class="screen">
+      <header class="screen-header">
+        <button class="btn-icon" data-action="go-back" aria-label="Назад">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
+        <h2 class="screen-title">Настройки</h2>
+      </header>
+      <div class="screen-content settings-content">
+
+        <section class="settings-group" aria-labelledby="settings-sound-title">
+          <h3 class="settings-group-title" id="settings-sound-title">Звук</h3>
+          <div class="settings-card">
+            <button type="button" class="setting-row setting-toggle" role="switch" aria-checked="true" data-action="setting-toggle" data-setting="sfxEnabled">
+              <span class="setting-text">
+                <span class="setting-title">Звуковые эффекты</span>
+                <span class="setting-desc">Звуки интерфейса и игр</span>
+              </span>
+              <span class="switch" aria-hidden="true"><span class="switch-thumb"></span></span>
+            </button>
+            <div class="setting-row setting-row--range">
+              <div class="setting-range-head">
+                <label class="setting-title" for="range-sfx">Громкость эффектов</label>
+                <output class="setting-value" for="range-sfx">70%</output>
+              </div>
+              <input type="range" class="range" id="range-sfx" min="0" max="100" step="5" value="70" data-setting-range="sfxVolume" aria-valuetext="70%">
+          </div>
+          <button type="button" class="setting-row setting-toggle" role="switch" aria-checked="false" data-action="setting-toggle" data-setting="musicEnabled">
+            <span class="setting-text">
+              <span class="setting-title">Музыка</span>
+              <span class="setting-desc">Фоновая музыка</span>
+            </span>
+            <span class="switch" aria-hidden="true"><span class="switch-thumb"></span></span>
+          </button>
+          <div class="setting-row setting-row--range">
+            <div class="setting-range-head">
+              <label class="setting-title" for="range-music">Громкость музыки</label>
+              <output class="setting-value" for="range-music">50%</output>
+            </div>
+            <input type="range" class="range" id="range-music" min="0" max="100" step="5" value="50" data-setting-range="musicVolume" aria-valuetext="50%">
+          </div>
+          </div>
+          <p class="setting-note" id="music-note" role="status" hidden>Не удалось загрузить музыку. Проверьте соединение и включите музыку снова.</p>
+        </section>
+
+        <section class="settings-group" aria-labelledby="settings-look-title">
+          <h3 class="settings-group-title" id="settings-look-title">Внешний вид</h3>
+          <div class="settings-card">
+            <button type="button" class="setting-row setting-toggle" role="switch" aria-checked="true" data-action="setting-toggle" data-setting="animationsEnabled">
+              <span class="setting-text">
+                <span class="setting-title">Анимации</span>
+                <span class="setting-desc">Переходы, появление карточек и движение плиток</span>
+              </span>
+              <span class="switch" aria-hidden="true"><span class="switch-thumb"></span></span>
+            </button>
+          </div>
+        </section>
+
+        <section class="settings-group" aria-labelledby="settings-data-title">
+          <h3 class="settings-group-title" id="settings-data-title">Данные</h3>
+          <div class="settings-card">
+            <button type="button" class="setting-row setting-action setting-action--danger" data-action="reset-scores">
+              <span class="setting-text">
+                <span class="setting-title">Сбросить рекорды</span>
+                <span class="setting-desc">Удалить лучшие результаты во всех играх</span>
+              </span>
+              <span class="menu-arrow" aria-hidden="true">›</span>
+            </button>
+            <button type="button" class="setting-row setting-action" data-action="reset-settings">
+              <span class="setting-text">
+                <span class="setting-title">Сбросить настройки</span>
+                <span class="setting-desc">Вернуть значения по умолчанию</span>
+              </span>
+              <span class="menu-arrow" aria-hidden="true">›</span>
+            </button>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+    <!-- ===== ДИАЛОГ ПОДТВЕРЖДЕНИЯ ===== -->
+    <div id="confirm-dialog" class="dialog-backdrop hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="confirm-title" aria-describedby="confirm-text">
+      <div class="dialog">
+        <h3 class="dialog-title" id="confirm-title"></h3>
+        <p class="dialog-text" id="confirm-text"></p>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" id="confirm-cancel" data-action="dialog-cancel">Отмена</button>
+          <button type="button" class="btn btn-danger" id="confirm-ok" data-action="dialog-confirm">Сбросить</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== УВЕДОМЛЕНИЕ ===== -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
